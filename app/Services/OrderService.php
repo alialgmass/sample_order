@@ -47,18 +47,20 @@ class OrderService
     private function calculateItemPrice(int $sizeId): float
     {
         $size = ProductSize::findOrFail($sizeId);
+
         return $size->price;
     }
 
     private function calculateTotalPrice(array $items, ?string $couponCode): float
     {
         $totalBeforeDiscount = $this->calculateSubtotal($items);
+
         return $this->applyCoupon($totalBeforeDiscount, $couponCode);
     }
 
     private function calculateSubtotal(array $items): float
     {
-        return collect($items)->sum(fn($item) => $item['price'] * $item['quantity']);
+        return collect($items)->sum(fn ($item) => $item['price'] * $item['quantity']);
     }
 
     private function applyCoupon(float $subtotal, ?string $couponCode): float
@@ -70,6 +72,7 @@ class OrderService
         $coupon = $this->getValidCoupon($couponCode);
         if ($coupon) {
             $discount = $this->calculateDiscount($subtotal, $coupon->discount_percentage);
+
             return $subtotal - $discount;
         }
 

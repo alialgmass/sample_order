@@ -32,13 +32,12 @@ class ApiRequest extends FormRequest
     /**
      * Handle a failed validation attempt.
      *
-     * @param  Validator  $validator
      * @throws HttpResponseException
      */
     protected function failedValidation(Validator $validator): void
     {
         $formattedErrors = collect($validator->errors()->toArray())->flatMap(function ($messages, $field) {
-            return array_map(fn($message) => ['field' => $field, 'message' => $message], $messages);
+            return array_map(fn ($message) => ['field' => $field, 'message' => $message], $messages);
         })->all();
 
         throw new HttpResponseException(

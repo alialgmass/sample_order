@@ -11,8 +11,7 @@ class CreateOrderController extends BaseController
     public function __invoke(CreateOrderRequest $request): JsonResponse
     {
         $validated = $request->validated();
-
-        dispatch(new CreateOrderJob($validated));
+        CreateOrderJob::dispatchSync($validated);
 
         return $this->getResponse(200);
     }
